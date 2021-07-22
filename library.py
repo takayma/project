@@ -1,5 +1,8 @@
 import random
 import math
+import os
+from PIL import Image
+import numpy as np
 
 class Sigmoid:
 	def f (self, x):
@@ -7,6 +10,15 @@ class Sigmoid:
 
 	def df (self, x):
 		return (1 - x) * x
+
+
+class Th:
+	def f (self, x):
+		return (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
+
+	def df (self, x):
+		return 1 - self.f(x) ** 2
+
 
 class ReLU:
 	def f (self, x):
@@ -20,6 +32,7 @@ class ReLU:
 			return 1
 		else:
 			return 0
+
 
 class Leaky_ReLU:
 	def f (self, x):
