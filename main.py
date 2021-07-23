@@ -4,33 +4,33 @@ matrix =   [[1, 0, 0],
 			[0, 1, 0],
 			[0, 0, 1]]
 
-model = M()
+# dirr = os.getcwd() + '\\Images\\For Test\\'
 
-dirr = os.getcwd() + '\\Images\\Normal\\'
+# os.chdir(dirr)
+# images = os.listdir()
 
-os.chdir(dirr)
-images = os.listdir()
+# for i in range(len(images)):
+# 	images[i] = Image.open(dirr + images[i])
+# 	images[i] = np.array(images[i])
 
-for i in range(len(images)):
-	images[i] = Image.open(dirr + images[i])
-	images[i] = np.array(images[i])
+# image = images[0]
 
-image = images[0]
+# image = convolution(image, matrix)
+# image = np.array(image, dtype = np.uint8)
 
-image = model.convolution(image, matrix)
-image = np.array(image, dtype = np.uint8)
+# image = Image.fromarray(image, 'RGB')
+# rand = random.randint(0, 1000000)
+# dirr = dirr[:-9]
+# dirr += f'{rand}.jpg'
 
-image = Image.fromarray(image, 'RGB')
-rand = random.randint(0, 1000000)
-dirr = dirr[:-7]
-dirr += f'{rand}.jpg'
+# image.save(dirr)
 
-image.save(dirr)
+k = 6
+mm = np.array([[random.randint(0, 255) for j in range(k)] for i in range(k)])
 
-# k = 6
-# mm = np.array([[[random.randint(0, 255) for l in range(3)] for j in range(k)] for i in range(k)])
-
-
+print(mm)
+h = convolution(mm, matrix)
+print(h)
 
 
 

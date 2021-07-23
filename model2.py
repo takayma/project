@@ -1,48 +1,44 @@
 from library import *
 
-class M:
-	def convolution (self, image, matrix, stride = 1):
-		new_image = []
-		image = [[[0, 0, 0] for i in image[0]], *image, [[0, 0, 0] for i in image[0]]]
-		for i in range(len(image)):
-			image[i] = [[0, 0, 0], *image[i], [0, 0, 0]]
-		k = len(matrix)
-		i = 0
-		while i <= len(image) - k:
-			new_image.append([])
-			j = 0
-			while j <= len(image[0]) - k:
-				rgb = np.array([image[i + l][j: j + k] for l in range(k)])
-				r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
-				r, g, b = np.array([r, g, b])  * matrix
-				r, g, b = sum(sum(r)), sum(sum(g)), sum(sum(b))
-				r, g, b = round(r / k), round(g / k), round(b / k)
-				rgb = [r, g, b]
-				new_image[i].append(rgb)
-				j += stride
-			i += stride
+def convolution (image, matrix, activation = 'ReLU', stride = 1):
+	f = eval(activation)
+	new_image = []
+	image = [[0 for i in image[0]], *image, [0 for i in image[0]]]
+	for i in range(len(image)):
+		image[i] = [0, *image[i], 0]
+	k = len(matrix)
+	i = 0
+	while i <= len(image) - k:
+		new_image.append([])
+		j = 0
+		while j <= len(image[0]) - k:
+			pic = np.array([image[i + l][j: j + k] for l in range(k)])
+			pic = pic  * matrix
+			pic = sum(sum(pic))
+			pic = f(pic)
+			new_image[i].append(pic)
+			j += stride
+		i += stride
 
-		return new_image
+	return new_image
 
-	def max_pooling (sef, image, size):
-		new_image = []
-		i = 0
-		while i <= len(image) - size:
-			new_image.append([])
-			j = 0
-			while j <= len(image[0]) - size:
-				rgb = np.array([image[i + l][j: j + size] for l in range(size)])
-				r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
-				nr, ng, nb = [], [], []
-				for l in range(len(r)):
-					for m in range(len(r[l])):
-						nr.append(r[l][m])
-						ng.append(g[l][m])
-						nb.append(b[l][m])
-				r, g, b = max(nr), max(ng), max(nb)
-				rgb = [r, g, b]
-				new_image[round(i / size)].append(rgb)
-				j += size
-			i += size
+def max_pooling (image, size):
+	new_image = []
+	indexes = []
+	i = 0
+	while i <= len(image) - size:
+		new_image.append([])
+		indexes.append([])
+		j = 0
+		while j <= len(image[0]) - size:
+			pic = np.array([image[i + l][j: j + size] for l in range(size)])
+			index = (0, 0)
+			for l in range(len(pic)):
+				for m in range(len(pic[l])):
+					if pic[index] < pic[l][m]: index = (l, m)
+			new_image[round(i / size)].append(pic[index])
+			indexes[round(i / size)].append((index[0] + i, index[1] + j))
+			j += size
+		i += size
 
-		return new_image
+	return new_image, indexes
