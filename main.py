@@ -1,8 +1,8 @@
 from AI import *
 
-matrix =   [[1, 0, 0],
-			[0, 1, 0],
-			[0, 0, 1]]
+# matrix =   [[1, 0, 0],
+# 			[0, 1, 0],
+# 			[0, 0, 1]]
 
 # dirr = os.getcwd() + '\\Images\\For Test\\'
 
@@ -13,80 +13,70 @@ matrix =   [[1, 0, 0],
 # 	images[i] = Image.open(dirr + images[i])
 # 	images[i] = np.array(images[i])
 
-# image = images[0]
+# 	image = images[i]
 
-# image = convolution(image, matrix)
-# image = np.array(image, dtype = np.uint8)
+# 	image = convolution(image, matrix)
+# 	image = np.array(image, dtype = np.uint8)
 
-# image = Image.fromarray(image, 'RGB')
-# rand = random.randint(0, 1000000)
-# dirr = dirr[:-9]
-# dirr += f'{rand}.jpg'
+# 	image = Image.fromarray(image, 'RGB')
+# 	rand = np.random.randint(0, 1000000)
+# 	dirr = dirr[:-9]
+# 	dirr += f'{rand}.jpg'
 
-# image.save(dirr)
+# 	image.save(dirr)
 
-k = 6
-mm = np.array([[random.randint(0, 255) for j in range(k)] for i in range(k)])
+# k = 6
+# test = np.array([[np.random.randint(0, 255) for j in range(k)] for i in range(k)])
 
-print(mm)
-h, i = max_pooling(mm, 2)
-print(h, i)
-
-
-
-
-# model = St([3, 1], 1, .5)
-
-# x = [
-# 	{'input': [1, 1, 1], 'output': [1]},
-# 	{'input': [1, 1, 0], 'output': [1]},
-# 	{'input': [1, 0, 0], 'output': [0]},
-# 	#{'input': [0, 0, 0], 'output': [0]},
-# 	{'input': [0, 0, 1], 'output': [0]},
-# 	#{'input': [0, 1, 1], 'output': [0]},
-# 	{'input': [1, 0, 1], 'output': [0]},
-# 	{'input': [0, 1, 0], 'output': [0]}
-# 	]
+# print(test)
+# test = convolution(test, matrix)
+# print(test)
+# test, indexes = max_pooling(test, 2)
+# print(test, indexes)
 
 
-# def MSE (x, ai):
-# 	error = 0
-# 	for i in x:
-# 		ai.iteration(i['input'])
-# 		for j in range(len(i['output'])):
-# 			error += (i['output'][j] - ai.x[-1][j]) ** 2
-# 		error /= len(i['output'])
-# 	error /= len(x)
 
-# 	return error
+model = Perceptron(
+		k = [3, 1],
+		n = 1,
+		m = .5,
+		activation = 'Sigmoid'
+		)
 
-# def full_train (ai, x, a):
-# 	epochs = 0
+x = [
+	{'input': [1, 1, 1], 'output': [1]},
+	{'input': [1, 1, 0], 'output': [1]},
+	{'input': [1, 0, 0], 'output': [0]},
+	#{'input': [0, 0, 0], 'output': [0]},
+	{'input': [0, 0, 1], 'output': [0]},
+	#{'input': [0, 1, 1], 'output': [0]},
+	{'input': [1, 0, 1], 'output': [0]},
+	{'input': [0, 1, 0], 'output': [0]}
+	]
 
-# 	while MSE(x, ai) > a:
-# 		epochs += 1
+def full_train (model, x, a):
+	epochs = 0
 
-# 		print(MSE(x, ai))
+	while MSE(model, x) > a:
+		epochs += 1
 
-# 		i = random.randint(0, len(x) - 1)
+		print(MSE(model, x))
 
-# 		ai.iteration(x[i]['input'])
-# 		ai.train(x[i]['output'])
+		i = np.random.randint(0, len(x))
 
-# 	return epochs
+		model.forward(x[i]['input'])
+		model.backward(x[i]['output'])
 
+	return epochs
 
-# epochs = full_train(model, x, 0.001)
+epochs = full_train(model, x, .001)
 
-# print(epochs)
-
-# model.iteration(x[0]['input'])
-# print(model.x[-1])
-
-
-# model.iteration(x[1]['input'])
-# print(model.x[-1])
+print(epochs)
 
 
-# model.iteration(x[2]['input'])
-# print(model.x[-1])
+while True:
+	inp = input()
+	inp = list(inp)
+	inp = list(map(int, inp))
+	model.forward(inp)
+	print(model.x[-1])

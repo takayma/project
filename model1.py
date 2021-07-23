@@ -1,13 +1,17 @@
 from library import *
 
-class St (Sigmoid):
-	def __init__ (self, k, n):
-		super().__init__()
+class Perceptron:
+	def __init__ (self, k, n, m, activation):
 		self.k = k
+		activation = eval(f'{activation}()')
+		self.f = activation.f
+		self.df = activation.df
 		self.n = n
-		self.w = [[[random.uniform(0, 1) for l in range(k[i + 1])] for j in range(k[i] + 1)] for i in range(len(k) - 1)]
-		
-	def iteration (self, input):
+		self.m = m
+		self.w = [[[np.random.uniform(0, 1) for l in range(k[i + 1])] for j in range(k[i] + 1)] for i in range(len(k) - 1)]
+		self.nw = [[[0 for l in range(k[i + 1])] for j in range(k[i] + 1)] for i in range(len(k) - 1)]
+
+	def forward (self, input):
 		self.x = [[0 for j in range(self.k[i])] for i in range(len(self.k))]
 		self.x[0] = [*input]
 		for i in range(len(self.x) - 1):
@@ -20,7 +24,7 @@ class St (Sigmoid):
 				self.x[i + 1][j] = self.f(self.x[i + 1][j])
 
 
-	def train (self, output):
+	def backward (self, output):
 		self.err = [[0 for j in range(self.k[i])] for i in range(len(self.k))]
 
 		for i in range(len(output)):
@@ -34,4 +38,5 @@ class St (Sigmoid):
 		for i in range(len(self.k) - 1):
 			for j in range(self.k[i + 1]):
 				for l in range(self.k[i] + 1):
-					self.w[i][l][j] += self.n * self.x[i][l] * self.err[i + 1][j]
+					self.nw[i][l][j] = self.n * self.x[i][l] * self.err[i + 1][j] + self.m * self.nw[i][l][j]
+					self.w[i][l][j] += self.nw[i][l][j]

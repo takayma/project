@@ -1,6 +1,6 @@
 from library import *
 
-def convolution (image, matrix, activation = 'ReLU', stride = 1):
+def convolution (image, matrix, activation, stride):
 	f = eval(activation)()
 	f = f.f
 	new_image = []
@@ -43,3 +43,21 @@ def max_pooling (image, size):
 		i += size
 
 	return new_image, indexes
+
+def layers (layers):
+	x = layer[0]['image']
+	indexes = []
+	for layer in layers:
+		if layer['name'] == 'Conv':
+			x = convolution(
+				image = x,
+				matrix = layer['matrix'],
+				activation = layer['activation'],
+				stride = layer['stride']
+				)
+		elif layer['name'] == 'Max_Pooling':
+			x, index = max_pooling(
+				image = x,
+				size = layer['size']
+				)
+			indexes.append(index)
