@@ -29,9 +29,8 @@ k = 6
 mm = np.array([[random.randint(0, 255) for j in range(k)] for i in range(k)])
 
 print(mm)
-h = convolution(mm, matrix)
-print(h)
-
+h, i = max_pooling(mm, 2)
+print(h, i)
 
 
 

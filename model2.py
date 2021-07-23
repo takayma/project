@@ -1,7 +1,8 @@
 from library import *
 
 def convolution (image, matrix, activation = 'ReLU', stride = 1):
-	f = eval(activation)
+	f = eval(activation)()
+	f = f.f
 	new_image = []
 	image = [[0 for i in image[0]], *image, [0 for i in image[0]]]
 	for i in range(len(image)):
@@ -13,7 +14,7 @@ def convolution (image, matrix, activation = 'ReLU', stride = 1):
 		j = 0
 		while j <= len(image[0]) - k:
 			pic = np.array([image[i + l][j: j + k] for l in range(k)])
-			pic = pic  * matrix
+			pic = pic * matrix
 			pic = sum(sum(pic))
 			pic = f(pic)
 			new_image[i].append(pic)

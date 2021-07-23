@@ -12,20 +12,9 @@ class Sigmoid:
 		return (1 - x) * x
 
 
-class Th:
-	def f (self, x):
-		return (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
-
-	def df (self, x):
-		return 1 - self.f(x) ** 2
-
-
 class ReLU:
 	def f (self, x):
-		if x >= 0:
-			return x
-		else:
-			return 0
+		return max(x, 0)
 
 	def df (self, x):
 		if x >= 0:
@@ -36,10 +25,7 @@ class ReLU:
 
 class Leaky_ReLU:
 	def f (self, x):
-		if x >= 0:
-			return x
-		else:
-			return x * 0.01
+		returnmax(x, 0.01 * x)
 
 	def df (self, x):
 		if x >= 0:
