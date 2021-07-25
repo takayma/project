@@ -5,7 +5,7 @@ import numpy as np
 
 class MSE:
 	def f (self, ideal, output):
-		return (ideal - output) ** 2
+		return 1/2 * (ideal - output) ** 2
 
 	def df (self, ideal, output):
 		return -(ideal - output)
