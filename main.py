@@ -37,46 +37,49 @@ from AI import *
 
 
 model = Perceptron(
-		k = [3, 1],
+		k = [3, 2],
 		n = 1,
 		m = .5,
-		activation = 'Sigmoid'
+		activation = 'Sigmoid',
+		loss = 'Cross_Entropy'
 		)
 
 x = [
-	{'input': [1, 1, 1], 'output': [1]},
-	{'input': [1, 1, 0], 'output': [1]},
-	{'input': [1, 0, 0], 'output': [0]},
-	#{'input': [0, 0, 0], 'output': [0]},
-	{'input': [0, 0, 1], 'output': [0]},
-	#{'input': [0, 1, 1], 'output': [0]},
-	{'input': [1, 0, 1], 'output': [0]},
-	{'input': [0, 1, 0], 'output': [0]}
+	{'input': [1, 1, 1], 'output': [1, 0]},
+	{'input': [1, 1, 0], 'output': [1, 0]},
+	{'input': [1, 0, 0], 'output': [0, 1]},
+	#{'input': [0, 0, 0], 'output': [0, 1]},
+	{'input': [0, 0, 1], 'output': [0, 1]},
+	#{'input': [0, 1, 1], 'output': [0, 1]},
+	{'input': [1, 0, 1], 'output': [0, 1]},
+	{'input': [0, 1, 0], 'output': [0, 1]}
 	]
 
-def full_train (model, x, a):
-	epochs = 0
+epochs = 0
+e = 1
+while e > 0.0001:
+	epochs += 1
 
-	while MSE(model, x) > a:
-		epochs += 1
+	i = np.random.randint(0, len(x))
 
-		print(MSE(model, x))
+	model.forward(x[i]['input'])
+	model.backward(x[i]['output'])
 
-		i = np.random.randint(0, len(x))
-
-		model.forward(x[i]['input'])
-		model.backward(x[i]['output'])
-
-	return epochs
-
-epochs = full_train(model, x, .001)
+	e = 0
+	for y in x:
+		inp = y['input']
+		ide = y['output']
+		model.forward(inp)
+		out = model.x[-1]
+		for ideal, output in zip(ide, out):
+			e += MSE().f(ideal, output)
+		e /= len(out)
+	e /= len(x)
+	print(e)
 
 print(epochs)
 
-
-while True:
-	inp = input()
-	inp = list(inp)
-	inp = list(map(int, inp))
+while 1:
+	inp = list(map(int, list(input('Input::: '))))
 	model.forward(inp)
 	print(model.x[-1])
