@@ -57,7 +57,8 @@ x = [
 
 epochs = 0
 e = 1
-while e > 0.0001:
+accuracy = 99
+while e > (100 - accuracy) / 100:
 	epochs += 1
 
 	i = np.random.randint(0, len(x))
@@ -72,7 +73,7 @@ while e > 0.0001:
 		model.forward(inp)
 		out = model.x[-1]
 		for ideal, output in zip(ide, out):
-			e += MSE().f(ideal, output)
+			e += f(ideal, output)
 		e /= len(out)
 	e /= len(x)
 	print(e)

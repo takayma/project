@@ -46,3 +46,27 @@ class Perceptron:
 				for l in range(self.k[i] + 1):
 					self.nw[i][l][j] = self.n * self.x[i][l] * self.err[i + 1][j] + self.m * self.nw[i][l][j]
 					self.w[i][l][j] -= self.nw[i][l][j]
+
+	def full_train (self, data):
+		epochs = 0
+		e = 1
+		accuracy = 99
+		while e > (100 - accuracy) / 100:
+			epochs += 1
+
+			i = np.random.randint(0, len(data))
+
+			self.forward(data[i]['input'])
+			self.backward(data[i]['output'])
+			
+			e = 0
+			for element in data:
+				inp = element['input']
+				ide = element['output']
+				self.forward(inp)
+				out = self.x[-1]
+				for ideal, output in zip(ide, out):
+					e += f(ideal, output)
+				e /= len(out)
+			e /= len(data)
+		return epochs

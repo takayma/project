@@ -3,6 +3,10 @@ from PIL import Image
 import numpy as np
 
 
+def f (ideal, output):
+	return abs(ideal - output)
+
+
 class MSE:
 	def f (self, ideal, output):
 		return 1/2 * (ideal - output) ** 2
@@ -36,6 +40,7 @@ class ReLU:
 			return 1
 		else:
 			return 0
+
 
 class Soft_Max:
 	def f (self, x):
