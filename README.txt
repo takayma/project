@@ -23,15 +23,38 @@
 
 
 Источники:
-Нейронные сети для начинающих. Часть 1	 		        https://habr.com/ru/post/312450/
-Нейронные сети для начинающих. Часть 2 			        https://habr.com/ru/post/313216/
-Common Loss functions in machine learning 		        https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
-Университете ИТМО Обратное распространение ошибки 	    https://neerc.ifmo.ru/wiki/index.php?title=Обратное_распространение_ошибки
-Understanding RMSprop — faster neural network learning	https://towardsdatascience.com/understanding-rmsprop-faster-neural-network-learning-62e116fcf29a
-A Step by Step Backpropagation Example                  https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
-English Wikipedia Backpropagation                       https://en.wikipedia.org/wiki/Backpropagation#Derivation
-What is momentum in neural network?                     https://datascience.stackexchange.com/questions/84167/what-is-momentum-in-neural-network
-Нейронная сеть с SoftMax слоем на c#                    https://habr.com/ru/post/155235/
-Сверточная сеть на python. Часть 1. Определение основных параметров модели  https://habr.com/ru/company/ods/blog/344008/
-Сверточная сеть на python. Часть 2. Вывод формул для обучения модели        https://habr.com/ru/company/ods/blog/344116/
-Stochastic Gradient Descent with momentum               https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d
+Нейронные сети для начинающих. Часть 1
+https://habr.com/ru/post/312450/
+
+Нейронные сети для начинающих. Часть 2
+https://habr.com/ru/post/313216/
+
+Common Loss functions in machine learning
+https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
+
+Университете ИТМО Обратное распространение ошибки
+https://neerc.ifmo.ru/wiki/index.php?title=Обратное_распространение_ошибки
+
+Understanding RMSprop — faster neural network learning
+https://towardsdatascience.com/understanding-rmsprop-faster-neural-network-learning-62e116fcf29a
+
+A Step by Step Backpropagation Example
+https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
+
+English Wikipedia Backpropagation
+https://en.wikipedia.org/wiki/Backpropagation#Derivation
+
+What is momentum in neural network?
+https://datascience.stackexchange.com/questions/84167/what-is-momentum-in-neural-network
+
+Нейронная сеть с SoftMax слоем на c#
+https://habr.com/ru/post/155235/
+
+Сверточная сеть на python. Часть 1. Определение основных параметров модели
+https://habr.com/ru/company/ods/blog/344008/
+
+Сверточная сеть на python. Часть 2. Вывод формул для обучения модели
+https://habr.com/ru/company/ods/blog/344116/
+
+Stochastic Gradient Descent with momentum
+https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d
