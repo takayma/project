@@ -1,9 +1,10 @@
 import os
-from PIL import Image
 import numpy as np
 from random import *
+from PIL import Image
 from pprint import pprint
 from math import *
+import json
 
 class MSE:
 	def f (self, ideal, output):
