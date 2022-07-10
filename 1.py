@@ -6,7 +6,7 @@ from kivy.core.window import Window
 from kivy.graphics import (Color, Line)
 
 from library import *
-from model2 import *
+from model import *
 
 
 ai = NN(ls=[['full_connected', 800*600, 20, 2]])
