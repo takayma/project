@@ -37,4 +37,6 @@
 [Нейронная сеть с SoftMax слоем на c#](https://habr.com/ru/post/155235/)\
 [Сверточная сеть на python. Часть 1. Определение основных параметров модели](https://habr.com/ru/company/ods/blog/344008/)\
 [Сверточная сеть на python. Часть 2. Вывод формул для обучения модели](https://habr.com/ru/company/ods/blog/344116/)\
-[Stochastic Gradient Descent with momentum](https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d)
+[Stochastic Gradient Descent with momentum](https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d)\
+[Генетический алгоритм. Просто о сложном](https://habr.com/ru/post/128704/)\
+[Loss Functions in Neural Networks](https://www.theaidream.com/post/loss-functions-in-neural-networks)

@@ -2,46 +2,40 @@ from library import *
 
 
 class NN:
-	def __init__(self, ls, activation='ReLU', loss='Cross_Entropy', softmax=True, n=0.4, m=0.8):
-		self.ls = ls
+	def __init__(self, layers, activation=Sigmoid, loss=Binary_Cross_Entropy, softmax=True, n=0.4, m=0.8):
+		self.error = None
+		self.x = None
+		self.err = None
 
-		activation = eval(f'{activation}()')
-		self.f = activation.f
-		self.df = activation.df
+		self.layers = layers
 
-		loss = eval(f'{loss}()')
-		self.l_f = loss.f
-		self.l_df = loss.df
+		self.activation = activation
+		self.f = activation().f
+		self.df = activation().df
+
+		self.loss = loss
+		self.l_f = loss().f
+		self.l_df = loss().df
 
 		self.softmax = softmax
 
-		self.matrixes = []
-		for layer in ls:
+		self.matrices = []
+		for layer in layers:
 			if layer[0] == 'convolution':
-				self.matrixes.append([])
+				self.matrices.append([])
 				for i in range(layer[1]):
-					self.matrixes[-1].append(
-						[[uniform(1, 5) for _1 in range(layer[2])] for _2 in range(layer[3])])
+					self.matrices[-1].append([[uniform(1, 5) for _1 in range(layer[2])] for _2 in range(layer[3])])
 			elif layer[0] == 'full_connected':
 				self.k = layer[1:]
 
 		self.n = n
 		self.m = m
 
-		self.w = []
-		self.delta_w = []
-		for i in range(len(self.k) - 1):
-			self.w.append([])
-			self.delta_w.append([])
-			for j in range(self.k[i] + 1):
-				self.w[i].append([])
-				self.delta_w[i].append([])
-				for l in range(self.k[i + 1]):
-					self.w[i][j].append(uniform(0, 1))
-					self.delta_w[i][j].append(0)
+		self.w = [[[uniform(0, 1) for _1 in range(self.k[i + 1])] for _2 in range(self.k[i] + 1)] for i in range(len(self.k) - 1)]
+		self.delta_w = [[[0 for _1 in range(self.k[i + 1])] for _2 in range(self.k[i] + 1)] for i in range(len(self.k) - 1)]
 
 	def __copy__(self):
-		copied = NN(ls=self.ls, softmax=self.softmax, n=self.n, m=self.m)
+		copied = NN(layers=self.layers, softmax=self.softmax, n=self.n, m=self.m)
 		copied.f = self.f
 		copied.df = self.df
 		copied.l_f = self.l_f
@@ -49,26 +43,26 @@ class NN:
 
 		return copied
 
-	def forward_fc(self, input):
-		self.x = [[0 for j in range(self.k[i])] for i in range(len(self.k))]
-		self.x[0] = [*input]
+	def forward_fc(self, data_input):
+		self.x = [[0 for _1 in range(self.k[i])] for i in range(len(self.k))]
+		self.x[0] = [*data_input]
 		for i in range(len(self.x) - 1):
 			self.x[i].append(1)
 
 		for i in range(len(self.k) - 1):
 			for j in range(self.k[i + 1]):
-				for l in range(self.k[i] + 1):
-					self.x[i + 1][j] += self.x[i][l] * self.w[i][l][j]
+				for d in range(self.k[i] + 1):
+					self.x[i + 1][j] += self.x[i][d] * self.w[i][d][j]
 				if i != len(self.k) - 2 or not self.softmax:
 					self.x[i + 1][j] = self.f(self.x[i + 1][j])
 		if self.softmax:
 			self.x[-1] = Soft_Max().f(self.x[-1])
 
-	def backpropagation_fc(self, output):
-		self.err = [[0 for j in range(self.k[i])] for i in range(len(self.k))]
+	def backpropagation_fc(self, data_output):
+		self.err = [[0 for _1 in range(self.k[i])] for i in range(len(self.k))]
 
-		for i in range(len(output)):
-			self.err[-1][i] = self.l_df(output[i], self.x[-1][i])
+		for i in range(len(data_output)):
+			self.err[-1][i] = self.l_df(self.x[-1][i], data_output[i])
 			if self.softmax:
 				self.err[-1][i] *= Soft_Max().df(self.x[-1][i])
 			else:
@@ -76,40 +70,64 @@ class NN:
 
 		for i in range(len(self.k) - 2, -1):
 			for j in range(self.k[i]):
-				for l in range(self.k[i + 1]):
-					self.err[i][j] += (self.err[i + 1][l] * self.w[i][j][l]) * self.df(self.x[i][j])
+				for d in range(self.k[i + 1]):
+					self.err[i][j] += self.err[i + 1][d] * self.w[i][j][d] * self.df(self.x[i][j])
 
 		for i in range(len(self.k) - 1):
 			for j in range(self.k[i + 1]):
-				for l in range(self.k[i] + 1):
-					self.delta_w[i][l][j] = self.m * self.delta_w[i][l][j] + self.n * self.x[i][l] * self.err[i + 1][j]
-					self.w[i][l][j] -= self.delta_w[i][l][j]
+				for d in range(self.k[i] + 1):
+					self.delta_w[i][d][j] = self.m * self.delta_w[i][d][j] + self.n * self.x[i][d] * self.err[i + 1][j]
+					self.w[i][d][j] -= self.delta_w[i][d][j]
+
+	def calculate_error(self, data):
+		self.error = 0
+		for data_input, data_output in data:
+			self.forward_fc(data_input)
+			for ideal, output in zip(data_output, self.x[-1]):
+				self.error += self.l_f(output, ideal)
+				if self.loss == MAE or self.loss == MSE:
+					self.error /= len(data_output)
+		self.error /= len(data)
+
+	def genetic_algorithm(self, data, count, best_count, arr=[]):
+		if arr == []:
+			for i in range(count):
+				arr.append(self.__copy__())
+		else:
+			old = deepcopy(arr)
+			arr = []
+			for i1 in range(count):
+				arr.append(self.__copy__())
+				for i in range(len(self.k) - 1):
+					for j in range(self.k[i + 1]):
+						for d in range(self.k[i] + 1):
+							index = randint(0, best_count - 1)
+							arr[i1].w[i][d][j] = old[index].w[i][d][j] + uniform(-0.5, 0.5)
+
+		for i in range(count):
+			arr[i].forward_fc(data_input)
+			arr[i].calculate_error(data)
+
+		arr.sort(key=lambda x: x.error)
+
+		for a in arr[: best_count - 1]:
+			print(a.error)
+
+		return arr[: best_count]
 
 	def train_fc(self, data, a=0.001):
 		epochs = 0
-		e = a + 1
-		while e > a:
+		while True:
 			ind = randint(0, len(data) - 1)
 			self.forward_fc(data[ind][0])
 			self.backpropagation_fc(data[ind][1])
 
-			e = 0
-			for input, output in data:
-				self.forward_fc(input)
-				for i in range(len(output)):
-					e += self.l_f(output[i], self.x[-1][i])
-				e /= len(output)
-			e /= len(data)
-			print(e)
+			self.calculate_error(data)
+			print(self.error)
 
 			epochs += 1
-		return epochs
 
-	def genetic_algorithm(self, inp, start_count, best_count):
-		arr = []
-		for i in range(start_count):
-			arr.append(self.__copy__())
-			arr[i].forward_fc(inp)
-			arr[i].calculate_error()
+			if self.error < a:
+				break
 
-		arr.sort(key=lambda x: x.err)
+		print(epochs)

@@ -10,11 +10,18 @@ x = [
 	]
 
 model = NN(
-	ls=[['full_connected', 3, 2]],
+	layers=[['full_connected', 3, 2, 2]]
 	)
-print(model.train_fc(x))
 
-while 1:
-	inp = list(map(int, list(input('Input::: '))))
-	model.forward_fc(inp)
-	print(model.x[-1])
+a = []
+
+for i in range(100):
+	for j in x:
+		a = model.genetic_algorithm(j[0], x, 20, 2, a)
+
+model = a[0]
+
+for test in x:
+	model.forward_fc(test[0])
+	model.calculate_error(x)
+	print(f'Input = {test[0]}, ideal = {test[1]}, output = {model.x[-1]}, error = {model.error}')
